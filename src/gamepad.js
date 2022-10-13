@@ -14,6 +14,7 @@ const gamepad = {
       vibrationMode: -1,
       vibration: false,
       mapping: gpad.mapping,
+      remapping: {},
       buttonActions: {},
       axesActions: {},
       pressed: {},
@@ -27,6 +28,16 @@ const gamepad = {
           this[property] = value;
         } else {
           error(MESSAGES.INVALID_PROPERTY);
+        }
+      },
+      setRemapping: function(newMapping) {
+        this.remapping = newMapping;
+      },
+      getRemappedButtonId: function(buttonId) {
+        if (this.remapping[buttonId] != null) {
+          return this.remapping[buttonId];
+        } else {
+          return buttonId;
         }
       },
       vibrate: function(value = 0.75, duration = 500) {
@@ -67,7 +78,8 @@ const gamepad = {
           gp = gps[this.id];
           if (gp.buttons) {
             for (let x = 0; x < this.buttons; x++) {
-              if (gp.buttons[x].pressed === true) {
+              let x_remapped = this.getRemappedButtonId(x);
+              if (gp.buttons[x_remapped].pressed === true) {
                 if (!this.pressed[`button${x}`]) {
                   this.pressed[`button${x}`] = true;
                   this.buttonActions[x].before();
