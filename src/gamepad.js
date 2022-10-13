@@ -5,6 +5,7 @@ const gamepad = {
   init: function(gpad) {
     let gamepadPrototype = {
       id: gpad.index,
+      name: gpad.id,
       buttons: gpad.buttons.length,
       axes: Math.floor(gpad.axes.length / 2),
       axeValues: [],
